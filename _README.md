@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ELectron Valpec
 
 ### Copiando para pasta /build
@@ -108,3 +109,7 @@ publish:
   token: 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
   vPrefixedTagName: true
 ```
+=======
+# valpec-catalog-app
+Catálogo VALPEC
+>>>>>>> 411836b63a86e8d1286c35c89704272bb78b5bfc
