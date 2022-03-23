@@ -1,0 +1,149 @@
+{
+  "name": "valpec-catalog",
+  "version": "6.1.1",
+  "description": "Valpec Catálogo - Diesel & Agrícola",
+  "author": {
+    "name": "Natan Cabral",
+    "email": "natancabral@hotmail.com",
+    "url": "https://github.com/natancabral"
+  },
+  "release": {
+    "provider": "github",
+    "owner": "gnnc",
+    "repo": "valpec-catalog-app",
+    "releases": "https://github.com/gnnc/valpec-catalog-app/releases/",
+    "template": "https://github.com/[owner]/[repo]/releases/download/v[version]/[repo]-[version].[extension]"
+  },
+  "type_module": "type module on package.json to run import ES6",
+  "typeXXX": "module",
+  "main": "./src/main.js",
+  "mainNew": "./build/main.js",
+  "homepage": "https://github.com/gnnc/valpec-catalog-app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnnc/valpec-catalog-app"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron . APP_DEV=true",
+    "start:prod": "electron . APP_DEV=false",
+    "start:prod2": "electron build . APP_DEV=false",
+    "start:prod3": "build . APP_DEV=false",
+    "copy:files:to:build": "node ./beforePackCopy.cjs",
+    "build:encrypt:data": "npm run copy:files:to:build && build-electron",
+    "deploy": "electron-builder build --publish always",
+    "build:win32": "electron-builder build --config=electron-builder.yml --publish never --win --ia32 && npm run build:rename",
+    "build:win": "electron-builder build --config=electron-builder.yml --publish never --win --x64 && npm run build:rename",
+    "build:linux": "electron-builder build --config=electron-builder.yml --publish never --linux && npm run build:rename",
+    "build:all": "electron-builder build --config=electron-builder.yml --publish never --win --linux --mac && npm run build:rename",
+    "build:win32:publish": "electron-builder build --config=electron-builder.yml --publish always --win --ia32 && npm run build:rename",
+    "build:win:publish": "electron-builder build --config=electron-builder.yml --publish always --win --x64 && npm run build:rename",
+    "build:linux:publish": "electron-builder build --config=electron-builder.yml --publish always --linux && npm run build:rename",
+    "build:all:publish": "electron-builder build --config=electron-builder.yml --publish always --win --linux --mac && npm run build:rename",
+    "build:rename": "node afterPackRenameFiles.js",
+    "asar:install": "npm install -g asar",
+    "asar:unzip:win": "cd ./dist/win-unpacked/resources/ && npx asar extract app.asar app-asar-unzip",
+    "package:client:build": "cd /mnt/FILES/development/projects-development/valpec/client/react/v0.50/ && npm run build",
+    "package:client:zip": "cd /mnt/FILES/development/projects-development/valpec/client/react/v0.50/build && zip build.zip * -r -1 -X build.zip",
+    "package:client:copy": "cp /mnt/FILES/development/projects-development/valpec/client/react/v0.50/build/build.zip /mnt/FILES/development/projects-development/valpec/client/electron/v0.02/src/data/build.zip",
+    "package:client:unzip": "cd /mnt/FILES/development/projects-development/valpec/client/electron/v0.02/src/data/ && unzip -o build.zip -d build",
+    "package:client": "npm run package:client:build && npm run package:client:zip && npm run package:client:copy && npm run package:client:unzip",
+    "package:client:nobuild": "npm run package:client:zip && npm run package:client:copy && npm run package:client:unzip",
+    "package:client:start": "npm run package:client:build && npm run package:client:zip && npm run package:client:copy && npm run package:client:unzip && npm run start"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "build-electron": "^1.0.4",
+    "cpy": "^9.0.1",
+    "electron": "^17.1.0",
+    "electron-builder": "^22.14.13"
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "decompress-zip": "^0.3.3",
+    "dotenv": "^16.0.0",
+    "electron-dl": "^3.3.0",
+    "electron-is-dev": "latest",
+    "electron-updater": "^4.6.5",
+    "json-helpers": "^5.2.0",
+    "json-prune": "^1.1.0",
+    "latest-stable-version": "latest",
+    "leveldown": "^6.1.0",
+    "levelup": "^5.1.1",
+    "localstoragedb": "^2.3.2",
+    "node-ejdb-lite": "^3.4.5",
+    "simple-json-db": "^2.0.0"
+  },
+  "build": {
+    "afterPack": "./afterPackHook.js",
+    "asar": true,
+    "extends": null,
+    "appId": "com.gnnc.valpec-catalog-app",
+    "compression": "maximum",
+    "productName": "Valpec Catálogo",
+    "copyright": "Copyright © 2022 ${author}",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "gnnc",
+        "repo": "valpec-catalog-app",
+        "vPrefixedTagName": true
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "verifyUpdateCodeSignature": true,
+      "certificateFile": "./certificate/certificate-2021-strongpass.pfx",
+      "certificatePassword": "VAL26pe%$_nc2021gi!",
+      "icon": "./assets/ico/icon.ico"
+    },
+    "nsis": {
+      "shortcutName": "${productName}",
+      "artifactName": "${name}-${version}.${ext}",
+      "oneClick": true,
+      "perMachine": true,
+      "allowElevation": true,
+      "runAfterFinish": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "menuCategory": "VALPEC",
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": false
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "./assets/ico/mac512.icns",
+      "category": "public.app-category.graphics-design"
+    },
+    "dmg": {
+      "artifactName": "${name}-${version}.${ext}",
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "icon": "./assets/ico/mac512.icns"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "deb": {
+      "artifactName": "${name}-${version}.${ext}"
+    }
+  }
+}
