@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ELectron Valpec
 
 ### Copiando para pasta /build
@@ -112,4 +111,3 @@ publish:
 =======
 # valpec-catalog-app
 Catálogo VALPEC
->>>>>>> 411836b63a86e8d1286c35c89704272bb78b5bfc
